@@ -1,0 +1,13 @@
+# Środowisko wirtualne
+venv/
+env/
+
+# Pamięć podręczna Pythona
+__pycache__/
+*.pyc
+
+# Baza danych (nie wrzucamy wrażliwych danych na GitHuba!)
+db.sqlite3
+
+# Ustawienia VS Code
+.vscode/
