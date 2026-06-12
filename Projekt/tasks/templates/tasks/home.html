@@ -1,0 +1,172 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Bilety{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-inner">
+        <h2>Znajdz wydarzenie i zarezerwuj miejsce</h2>
+        <p>Koncerty, festiwale, teatr i wydarzenia lokalne w jednym prostym panelu.</p>
+
+        <form class="search-bar" action="{% url 'tasks:index' %}" method="get">
+            <input class="search-field" type="search" name="q" placeholder="Szukaj wydarzenia" value="{{ search.q }}">
+            <div class="date-range search-field">
+                <button class="date-trigger" type="button">
+                    <span class="date-label">Data</span>
+                </button>
+                <input type="hidden" name="date_from" value="{{ search.date_from }}">
+                <input type="hidden" name="date_to" value="{{ search.date_to }}">
+                <div class="calendar-popover">
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <button type="button" data-prev-month>&lt;</button>
+                            <span class="calendar-title"></span>
+                            <span></span>
+                        </div>
+                        <div class="calendar-grid"></div>
+                    </div>
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <span></span>
+                            <span class="calendar-title"></span>
+                            <button type="button" data-next-month>&gt;</button>
+                        </div>
+                        <div class="calendar-grid"></div>
+                    </div>
+                </div>
+            </div>
+            <input class="search-field" type="search" name="location" placeholder="Lokalizacja" value="{{ search.location }}">
+            <button class="button" type="submit">Szukaj</button>
+        </form>
+    </div>
+</section>
+
+<section class="page-shell">
+    {% if search_active %}
+        <nav class="breadcrumbs search-breadcrumbs" aria-label="Sciezka strony">
+            <a href="{% url 'tasks:index' %}">Home</a>
+            <span>&gt;</span>
+            <strong>Wydarzenia</strong>
+        </nav>
+
+        <div class="section-heading">
+            <h2>Wyniki wyszukiwania</h2>
+        </div>
+
+        {% if result_sections %}
+            {% for section in result_sections %}
+                <div class="section-heading{% if forloop.first %} search-result-gap{% else %} section-gap{% endif %}">
+                    <h2>{{ section.title }}</h2>
+                </div>
+
+                <div class="carousel" data-carousel>
+                    <button class="carousel-arrow carousel-prev" type="button" aria-label="Poprzednie wydarzenie">&lt;</button>
+                    <div class="event-grid carousel-track">
+                    {% for event in section.events %}
+                        <a class="event-card" href="{% url 'tasks:detail' event.id %}">
+                            <div class="poster {% cycle 'poster-one' 'poster-two' 'poster-three' 'poster-four' 'poster-five' 'poster-six' %}">
+                                <span>{{ event.event_name }}</span>
+                            </div>
+                            <h3>{{ event.event_name }}</h3>
+                            <p>{{ event.event_date }}<br>{% if event.location %}{{ event.location }}<br>{% endif %}{{ event.seats }} miejsc</p>
+                        </a>
+                    {% endfor %}
+                    </div>
+                    <button class="carousel-arrow carousel-next" type="button" aria-label="Nastepne wydarzenie">&gt;</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <section class="menu-grid">
+                <article class="menu-card">
+                    <h3>Brak wydarzen.</h3>
+                    <p>Zmien filtry wyszukiwania albo sproboj innej daty, nazwy lub lokalizacji.</p>
+                </article>
+            </section>
+        {% endif %}
+    {% else %}
+        <div class="section-heading">
+            <h2>Na czasie</h2>
+        </div>
+
+        {% if featured_events %}
+            <div class="carousel" data-carousel>
+                <button class="carousel-arrow carousel-prev" type="button" aria-label="Poprzednie wydarzenie">&lt;</button>
+                <div class="event-grid carousel-track">
+                {% for event in featured_events %}
+                    <a class="event-card" href="{% url 'tasks:detail' event.id %}">
+                        <div class="poster {% cycle 'poster-one' 'poster-two' 'poster-three' 'poster-four' 'poster-five' 'poster-six' %}">
+                            <span>{{ event.event_name }}</span>
+                        </div>
+                        <h3>{{ event.event_name }}</h3>
+                        <p>{{ event.event_date }}<br>{% if event.location %}{{ event.location }}<br>{% endif %}{{ event.seats }} miejsc</p>
+                    </a>
+                {% endfor %}
+                </div>
+                <button class="carousel-arrow carousel-next" type="button" aria-label="Nastepne wydarzenie">&gt;</button>
+            </div>
+        {% else %}
+            <section class="menu-grid">
+                <article class="menu-card">
+                    <h3>Brak wydarzen.</h3>
+                    <p>Zmien filtry wyszukiwania albo dodaj wydarzenia przez panel administracyjny.</p>
+                </article>
+            </section>
+        {% endif %}
+
+        <div class="section-heading section-gap">
+            <h2>Zaplanuj wakacje juz teraz</h2>
+        </div>
+
+        {% if summer_events %}
+            <div class="carousel" data-carousel>
+                <button class="carousel-arrow carousel-prev" type="button" aria-label="Poprzednie wydarzenie">&lt;</button>
+                <div class="event-grid carousel-track">
+                {% for event in summer_events %}
+                    <a class="event-card" href="{% url 'tasks:detail' event.id %}">
+                        <div class="poster {% cycle 'poster-three' 'poster-four' 'poster-five' 'poster-six' 'poster-one' 'poster-two' %}">
+                            <span>{{ event.event_name }}</span>
+                        </div>
+                        <h3>{{ event.event_name }}</h3>
+                        <p>{{ event.event_date }}<br>{% if event.location %}{{ event.location }}<br>{% endif %}{{ event.seats }} miejsc</p>
+                    </a>
+                {% endfor %}
+                </div>
+                <button class="carousel-arrow carousel-next" type="button" aria-label="Nastepne wydarzenie">&gt;</button>
+            </div>
+        {% endif %}
+
+        <div class="section-heading section-gap">
+            <h2>Wybrane dla Ciebie</h2>
+        </div>
+
+        {% if selected_events %}
+            <div class="carousel" data-carousel>
+                <button class="carousel-arrow carousel-prev" type="button" aria-label="Poprzednie wydarzenie">&lt;</button>
+                <div class="event-grid carousel-track">
+                {% for event in selected_events %}
+                    <a class="event-card" href="{% url 'tasks:detail' event.id %}">
+                        <div class="poster {% cycle 'poster-five' 'poster-six' 'poster-one' 'poster-two' 'poster-three' 'poster-four' %}">
+                            <span>{{ event.event_name }}</span>
+                        </div>
+                        <h3>{{ event.event_name }}</h3>
+                        <p>{{ event.event_date }}<br>{% if event.location %}{{ event.location }}<br>{% endif %}{{ event.seats }} miejsc</p>
+                    </a>
+                {% endfor %}
+                </div>
+                <button class="carousel-arrow carousel-next" type="button" aria-label="Nastepne wydarzenie">&gt;</button>
+            </div>
+        {% endif %}
+
+        <section class="category-panel">
+            <div class="section-heading">
+                <h2>Kategorie wydarzen</h2>
+            </div>
+            <div class="category-grid">
+                {% for tile in category_tiles %}
+                    <a class="category {{ tile.style }}" href="{% url 'tasks:category' tile.slug %}">{{ tile.label }}</a>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,142 @@
+[
+  {
+    "model": "tasks.ticketevent",
+    "pk": 101,
+    "fields": {
+      "event_name": "Koncert szkolny",
+      "event_date": "2026-06-15",
+      "location": "Warszawa",
+      "category": "muzyka",
+      "subcategory": "pop",
+      "description": "Kameralny koncert z udzialem mlodych wykonawcow i lokalnych zespolow.",
+      "artists": "Zespol Szkolny, Mlodzi Wokalosci",
+      "seats": 120
+    }
+  },
+  {
+    "model": "tasks.ticketevent",
+    "pk": 102,
+    "fields": {
+      "event_name": "Jazz nad Wisla",
+      "event_date": "2026-06-21",
+      "location": "Warszawa",
+      "category": "muzyka",
+      "subcategory": "jazz",
+      "description": "Wieczor jazzowy w plenerze z muzyka na zywo i spokojna atmosfera.",
+      "artists": "Wisla Jazz Trio",
+      "seats": 90
+    }
+  },
+  {
+    "model": "tasks.ticketevent",
+    "pk": 103,
+    "fields": {
+      "event_name": "Noc Teatrow",
+      "event_date": "2026-06-28",
+      "location": "Krakow",
+      "category": "teatr",
+      "subcategory": "spektakle",
+      "description": "Przeglad spektakli teatralnych przygotowany przez lokalne sceny.",
+      "artists": "Teatr Miejski",
+      "seats": 65
+    }
+  },
+  {
+    "model": "tasks.ticketevent",
+    "pk": 104,
+    "fields": {
+      "event_name": "Rodzinny Piknik Muzyczny",
+      "event_date": "2026-07-03",
+      "location": "Poznan",
+      "category": "rodzina",
+      "subcategory": "dla-dzieci",
+      "description": "Rodzinne wydarzenie z muzyka, animacjami i atrakcjami dla dzieci.",
+      "artists": "Animatorzy Poznan, Kapela Rodzinna",
+      "seats": 140
+    }
+  },
+  {
+    "model": "tasks.ticketevent",
+    "pk": 105,
+    "fields": {
+      "event_name": "Kino pod Gwiazdami",
+      "event_date": "2026-07-08",
+      "location": "Gdansk",
+      "category": "kino",
+      "subcategory": "plenerowe",
+      "description": "Pokaz filmowy na swiezym powietrzu z jedna pula biletow.",
+      "artists": "Kino Letnie",
+      "seats": 110
+    }
+  },
+  {
+    "model": "tasks.ticketevent",
+    "pk": 106,
+    "fields": {
+      "event_name": "Festiwal Letni",
+      "event_date": "2026-07-12",
+      "location": "Krakow",
+      "category": "festiwale",
+      "subcategory": "letnie",
+      "description": "Letni festiwal z koncertami, strefa gastronomiczna i wydarzeniami towarzyszacymi.",
+      "artists": "Letnia Scena, DJ Sunset",
+      "seats": 50
+    }
+  },
+  {
+    "model": "tasks.ticketevent",
+    "pk": 107,
+    "fields": {
+      "event_name": "Bieg Miejski",
+      "event_date": "2026-07-18",
+      "location": "Lodz",
+      "category": "sport",
+      "subcategory": "bieganie",
+      "description": "Miejskie wydarzenie sportowe dla amatorow biegania.",
+      "artists": "Organizatorzy Biegu Miejskiego",
+      "seats": 200
+    }
+  },
+  {
+    "model": "tasks.ticketevent",
+    "pk": 108,
+    "fields": {
+      "event_name": "Stand-up Wieczor",
+      "event_date": "2026-07-24",
+      "location": "Wroclaw",
+      "category": "stand-up",
+      "subcategory": "komedia",
+      "description": "Wieczor komediowy z wystepami kilku stand-uperow.",
+      "artists": "Adam Nowak, Marta Kowal",
+      "seats": 80
+    }
+  },
+  {
+    "model": "tasks.ticketevent",
+    "pk": 109,
+    "fields": {
+      "event_name": "Koncert Muzyki Klasycznej",
+      "event_date": "2026-08-02",
+      "location": "Warszawa",
+      "category": "klasyka",
+      "subcategory": "orkiestra",
+      "description": "Koncert orkiestry z repertuarem muzyki klasycznej.",
+      "artists": "Orkiestra Kameralna",
+      "seats": 100
+    }
+  },
+  {
+    "model": "tasks.ticketevent",
+    "pk": 110,
+    "fields": {
+      "event_name": "Warsztaty Kultury",
+      "event_date": "2026-08-09",
+      "location": "Lublin",
+      "category": "kultura",
+      "subcategory": "warsztaty",
+      "description": "Spotkanie kulturalne z warsztatami i rozmowami z tworcami.",
+      "artists": "Dom Kultury Lublin",
+      "seats": 60
+    }
+  }
+]

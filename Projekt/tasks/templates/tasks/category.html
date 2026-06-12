@@ -1,0 +1,46 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}{{ category_title }} - Bilety{% endblock %}
+
+{% block content %}
+<section class="category-hero">
+    <div class="category-hero-inner">
+        <a class="back-link" href="{% url 'tasks:index' %}">&larr; Powrot</a>
+        <h2>{{ category_title }}</h2>
+        <p>Najpopularniejsze typy wydarzen w tej kategorii, podzielone na proste sekcje.</p>
+    </div>
+</section>
+
+<section class="page-shell category-page">
+    {% for section in subcategory_sections %}
+        <div class="section-heading{% if not forloop.first %} section-gap{% endif %}">
+            <h2>{{ section.title }}</h2>
+        </div>
+
+        {% if section.events %}
+            <div class="carousel" data-carousel>
+                <button class="carousel-arrow carousel-prev" type="button" aria-label="Poprzednie wydarzenie">&lt;</button>
+                <div class="event-grid carousel-track">
+                {% for event in section.events %}
+                    <a class="event-card" href="{% url 'tasks:detail' event.id %}">
+                        <div class="poster {% cycle 'poster-one' 'poster-two' 'poster-three' 'poster-four' 'poster-five' 'poster-six' %}">
+                            <span>{{ event.event_name }}</span>
+                        </div>
+                        <h3>{{ event.event_name }}</h3>
+                        <p>{{ event.event_date }}<br>{% if event.location %}{{ event.location }}<br>{% endif %}{{ event.seats }} miejsc</p>
+                    </a>
+                {% endfor %}
+                </div>
+                <button class="carousel-arrow carousel-next" type="button" aria-label="Nastepne wydarzenie">&gt;</button>
+            </div>
+        {% else %}
+            <section class="menu-grid empty-subcategory">
+                <article class="menu-card">
+                    <h3>Brak wydarzen.</h3>
+                    <p>Ta podkategoria jest przygotowana, ale nie ma jeszcze przypisanych wydarzen.</p>
+                </article>
+            </section>
+        {% endif %}
+    {% endfor %}
+</section>
+{% endblock %}

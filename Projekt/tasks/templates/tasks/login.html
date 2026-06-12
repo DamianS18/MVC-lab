@@ -1,0 +1,34 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Logowanie - Bilety{% endblock %}
+
+{% block content %}
+<section class="page-shell account-page">
+    <nav class="breadcrumbs search-breadcrumbs" aria-label="Sciezka strony">
+        <a href="{% url 'tasks:index' %}">Home</a>
+        <span>&gt;</span>
+        <strong>Logowanie</strong>
+    </nav>
+
+    <section class="account-card">
+        <h2>Zaloguj sie</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="form-errors">{{ form.non_field_errors }}</div>
+            {% endif %}
+            {% for field in form %}
+                <div class="form-row">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="form-errors">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button class="button" type="submit">Zaloguj</button>
+        </form>
+        <p class="account-note">Nie masz konta? <a href="{% url 'tasks:signup' %}">Utworz profil</a>.</p>
+    </section>
+</section>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}{{ ticketevent.event_name }} - Bilety{% endblock %}
+
+{% block content %}
+<section class="event-detail-hero">
+    <div class="event-detail-inner">
+        <nav class="breadcrumbs" aria-label="Sciezka strony">
+            <a href="{% url 'tasks:index' %}">Home</a>
+            <span>&gt;</span>
+            <a href="{% url 'tasks:category' ticketevent.category %}">{{ category_title }}</a>
+            <span>&gt;</span>
+            <span>{{ subcategory_title }}</span>
+            <span>&gt;</span>
+            <strong>{{ ticketevent.event_name }}</strong>
+        </nav>
+
+        <div class="event-title-row">
+            <div>
+                <h2>{{ ticketevent.event_name }}</h2>
+                <div class="event-meta-row">
+                    <span>{{ ticketevent.event_date }}</span>
+                    {% if ticketevent.location %}
+                        <span>{{ ticketevent.location }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="page-shell event-detail-page">
+    <aside class="event-side">
+        <div class="event-photo poster poster-four">
+            <span>{{ ticketevent.event_name }}</span>
+        </div>
+        <nav class="event-page-nav" aria-label="Sekcje wydarzenia">
+            <a href="#tickets">Bilety</a>
+            <a href="#about">O wydarzeniu</a>
+            <a href="#artists">Artysci</a>
+            <a href="#location">Lokalizacja</a>
+        </nav>
+    </aside>
+
+    <div class="event-main">
+        <section class="event-section" id="tickets">
+            <div class="section-heading">
+                <h2>Bilety</h2>
+            </div>
+            <article class="ticket-offer">
+                <div>
+                    <p class="ticket-date">{{ ticketevent.event_date }}</p>
+                    <h3>{{ ticketevent.event_name }}</h3>
+                    {% if ticketevent.location %}
+                        <p>{{ ticketevent.location }}</p>
+                    {% endif %}
+                    <p>{{ ticketevent.seats }} miejsc dostepnych</p>
+                </div>
+
+                {% if ticketevent.has_available_seats %}
+                    <form class="reservation-form" action="{% url 'tasks:reserve' ticketevent.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="button ticket-button" type="submit">Kup bilet</button>
+                    </form>
+                {% else %}
+                    <button class="button ticket-button" type="button" disabled>Brak miejsc</button>
+                {% endif %}
+            </article>
+        </section>
+
+        <section class="event-section" id="about">
+            <h2>O wydarzeniu</h2>
+            {% if ticketevent.description %}
+                <p>{{ ticketevent.description }}</p>
+            {% else %}
+                <p>{{ ticketevent.event_name }} to wydarzenie przygotowane dla osob, ktore chca ciekawie spedzic czas i zarezerwowac miejsce w prosty sposob. Na tej stronie znajdziesz najwazniejsze informacje o terminie, lokalizacji i dostepnych miejscach.</p>
+            {% endif %}
+        </section>
+
+        <section class="event-section" id="artists">
+            <h2>Artysci</h2>
+            {% if ticketevent.artists %}
+                <p>{{ ticketevent.artists }}</p>
+            {% else %}
+                <p>Lista wykonawcow i prowadzacych zostanie uzupelniona przez organizatora wydarzenia.</p>
+            {% endif %}
+        </section>
+
+        <section class="event-section" id="location">
+            <h2>Lokalizacja</h2>
+            {% if ticketevent.location %}
+                <p>{{ ticketevent.location }}</p>
+            {% else %}
+                <p>Lokalizacja zostanie podana wkrotce.</p>
+            {% endif %}
+        </section>
+    </div>
+</section>
+{% endblock %}

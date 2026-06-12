@@ -1,0 +1,95 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Profil - Bilety{% endblock %}
+
+{% block content %}
+<section class="page-shell profile-page">
+    <nav class="breadcrumbs search-breadcrumbs" aria-label="Sciezka strony">
+        <a href="{% url 'tasks:index' %}">Home</a>
+        <span>&gt;</span>
+        <strong>Profil</strong>
+    </nav>
+
+    <div class="profile-layout">
+        <aside class="profile-card">
+            <h2>Profil uzytkownika</h2>
+            <dl class="profile-data">
+                <dt>Nazwa uzytkownika</dt>
+                <dd>{{ request.user.username }}</dd>
+                <dt>Email</dt>
+                <dd>{{ request.user.email|default:"Nie podano" }}</dd>
+                <dt>Imie</dt>
+                <dd>{{ request.user.first_name|default:"Nie podano" }}</dd>
+                <dt>Nazwisko</dt>
+                <dd>{{ request.user.last_name|default:"Nie podano" }}</dd>
+            </dl>
+            <div class="profile-actions">
+                <form class="profile-logout-form" action="{% url 'tasks:logout' %}" method="post">
+                    {% csrf_token %}
+                    <button class="button secondary" type="submit">Wyloguj</button>
+                </form>
+            </div>
+        </aside>
+
+        <div class="profile-main">
+            <section class="event-section">
+                <h2>Moje bilety</h2>
+                {% if tickets %}
+                    <div class="ticket-list">
+                        {% for purchase in tickets %}
+                            <article class="profile-ticket">
+                                <div>
+                                    <h3>{{ purchase.event.event_name }}</h3>
+                                    <p>{{ purchase.event.event_date }}{% if purchase.event.location %} | {{ purchase.event.location }}{% endif %}</p>
+                                    <p>Zakupiono: {{ purchase.purchased_at }}</p>
+                                </div>
+                                <a class="button secondary" href="{% url 'tasks:detail' purchase.event.id %}">Szczegoly</a>
+                            </article>
+                        {% endfor %}
+                    </div>
+                    <div class="pagination">
+                        {% if tickets.has_previous %}
+                            <a class="button secondary" href="?tickets_page={{ tickets.previous_page_number }}&history_page={{ history.number }}">Poprzednia</a>
+                        {% endif %}
+                        <span>Strona {{ tickets.number }} z {{ tickets.paginator.num_pages }}</span>
+                        {% if tickets.has_next %}
+                            <a class="button secondary" href="?tickets_page={{ tickets.next_page_number }}&history_page={{ history.number }}">Nastepna</a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>Nie masz jeszcze aktywnych biletow.</p>
+                {% endif %}
+            </section>
+
+            <section class="event-section">
+                <h2>Historia wydarzen</h2>
+                {% if history %}
+                    <div class="ticket-list">
+                        {% for purchase in history %}
+                            <article class="profile-ticket">
+                                <div>
+                                    <h3>{{ purchase.event.event_name }}</h3>
+                                    <p>{{ purchase.event.event_date }}{% if purchase.event.location %} | {{ purchase.event.location }}{% endif %}</p>
+                                    <p>Zakupiono: {{ purchase.purchased_at }}</p>
+                                </div>
+                                <a class="button secondary" href="{% url 'tasks:detail' purchase.event.id %}">Szczegoly</a>
+                            </article>
+                        {% endfor %}
+                    </div>
+                    <div class="pagination">
+                        {% if history.has_previous %}
+                            <a class="button secondary" href="?tickets_page={{ tickets.number }}&history_page={{ history.previous_page_number }}">Poprzednia</a>
+                        {% endif %}
+                        <span>Strona {{ history.number }} z {{ history.paginator.num_pages }}</span>
+                        {% if history.has_next %}
+                            <a class="button secondary" href="?tickets_page={{ tickets.number }}&history_page={{ history.next_page_number }}">Nastepna</a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>Historia kupionych wydarzen jest jeszcze pusta.</p>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</section>
+{% endblock %}

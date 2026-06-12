@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Bilety{% endblock %}</title>
+    <style>
+        body {
+            --content-width: 900px;
+            --card-width: 167px;
+            --card-gap: 16px;
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f7fbf9;
+            color: #142822;
+        }
+
+        header {
+            background: #1f6f65;
+            color: #f7fff9;
+            padding: 0 24px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            max-width: var(--content-width);
+            margin: 0 auto;
+            min-height: 82px;
+            padding: 0 16px;
+        }
+
+        .brand {
+            margin: 0;
+            font-size: 31px;
+            font-style: italic;
+            font-weight: 800;
+        }
+
+        .topnav {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: flex-end;
+        }
+
+        .account-icon-link {
+            align-items: center;
+            border: 0;
+            border-radius: 999px;
+            color: #f7fff9;
+            display: inline-flex;
+            height: 34px;
+            justify-content: center;
+            text-decoration: none;
+            transition: background 0.16s ease;
+            width: 34px;
+        }
+
+        .account-icon-link:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .account-icon {
+            border: 2px solid currentColor;
+            border-radius: 999px;
+            display: block;
+            height: 8px;
+            position: relative;
+            width: 8px;
+        }
+
+        .account-icon::after {
+            border: 2px solid currentColor;
+            border-radius: 999px 999px 4px 4px;
+            content: "";
+            height: 8px;
+            left: 50%;
+            position: absolute;
+            top: 11px;
+            transform: translateX(-50%);
+            width: 16px;
+        }
+
+        main {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            color: #a33f2d;
+        }
+
+        .actions {
+            margin: 16px 0;
+        }
+
+        .button,
+        button {
+            display: inline-block;
+            border: 0;
+            border-radius: 6px;
+            background: #d95f3f;
+            color: white;
+            font-weight: 700;
+            padding: 11px 16px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .button.secondary {
+            background: #29444a;
+        }
+
+        .button:disabled {
+            background: #94a9a4;
+            cursor: not-allowed;
+        }
+
+        .page-shell {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 36px 16px 56px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            background:
+                linear-gradient(128deg, rgba(31, 111, 101, 0.96), rgba(243, 138, 74, 0.92)),
+                radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.22), transparent 30%),
+                radial-gradient(circle at 80% 6%, rgba(255, 238, 204, 0.28), transparent 26%);
+            overflow: visible;
+            position: relative;
+        }
+
+        .hero::after {
+            background: #f7fbf9;
+            bottom: -1px;
+            content: "";
+            height: 130px;
+            left: 0;
+            position: absolute;
+            right: 0;
+            transform: skewY(-13deg);
+            transform-origin: right bottom;
+        }
+
+        .hero-inner {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            min-height: 325px;
+            padding: 42px 16px 76px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h2 {
+            font-size: 42px;
+            line-height: 1.06;
+            margin: 0 0 14px;
+            max-width: 620px;
+            color: #f7fff9;
+        }
+
+        .hero p {
+            color: #e3fff6;
+            font-size: 17px;
+            margin: 0 0 26px;
+            max-width: 560px;
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 18px 38px rgba(25, 64, 70, 0.22);
+            display: grid;
+            grid-template-columns: 1.35fr 1.25fr 1fr auto;
+            max-width: var(--content-width);
+            overflow: visible;
+            position: relative;
+        }
+
+        .search-field {
+            background: white;
+            border: 0;
+            border-right: 1px solid #d8ece7;
+            color: #43605a;
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            margin: 0;
+            min-width: 0;
+            padding: 18px 20px;
+            text-align: left;
+        }
+
+        .search-field:focus {
+            outline: 2px solid #d95f3f;
+            outline-offset: -2px;
+        }
+
+        .search-bar .button {
+            border-radius: 0;
+            min-width: 120px;
+        }
+
+        .date-range {
+            position: relative;
+        }
+
+        .date-trigger {
+            align-items: center;
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            color: #43605a;
+            cursor: pointer;
+            display: flex;
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            height: 100%;
+            justify-content: space-between;
+            min-width: 0;
+            padding: 0;
+            text-align: left;
+            width: 100%;
+        }
+
+        .calendar-popover {
+            background: white;
+            border: 1px solid #d8ece7;
+            border-radius: 10px;
+            box-shadow: 0 18px 42px rgba(25, 64, 70, 0.24);
+            display: none;
+            gap: 18px;
+            left: 0;
+            padding: 16px;
+            position: absolute;
+            top: calc(100% + 10px);
+            width: max-content;
+            z-index: 5;
+        }
+
+        .date-range.open .calendar-popover {
+            display: flex;
+        }
+
+        .calendar {
+            width: 230px;
+        }
+
+        .calendar-header {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .calendar-header button {
+            border-radius: 6px;
+            min-width: 34px;
+            padding: 8px 10px;
+        }
+
+        .calendar-title {
+            font-weight: 800;
+        }
+
+        .calendar-grid {
+            display: grid;
+            gap: 5px;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        .calendar-weekday {
+            color: #607b75;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .calendar-day {
+            background: #eef8f5;
+            border: 0;
+            border-radius: 6px;
+            color: #18322d;
+            min-width: 0;
+            padding: 8px 0;
+        }
+
+        .calendar-day:hover,
+        .calendar-day.selected,
+        .calendar-day.in-range {
+            background: #d95f3f;
+            color: white;
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+            cursor: default;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .menu-card {
+            background: white;
+            border: 1px solid #d8ece7;
+            border-radius: 8px;
+            box-shadow: 0 12px 26px rgba(25, 64, 70, 0.09);
+            padding: 20px;
+        }
+
+        .menu-card h3 {
+            margin: 0 0 8px;
+        }
+
+        .menu-card p {
+            color: #5d706b;
+            min-height: 42px;
+        }
+
+        .message-modal {
+            align-items: center;
+            background: rgba(20, 40, 34, 0.42);
+            display: flex;
+            inset: 0;
+            justify-content: center;
+            padding: 24px;
+            position: fixed;
+            z-index: 20;
+        }
+
+        .message-dialog {
+            background: white;
+            border: 1px solid #d8ece7;
+            border-radius: 8px;
+            box-shadow: 0 24px 70px rgba(25, 64, 70, 0.32);
+            max-width: 420px;
+            padding: 28px;
+            text-align: center;
+            width: min(100%, 420px);
+        }
+
+        .message-dialog h2 {
+            font-size: 26px;
+            margin: 0 0 12px;
+        }
+
+        .messages {
+            display: grid;
+            gap: 10px;
+            list-style: none;
+            margin: 0 0 22px;
+            padding: 0;
+        }
+
+        .messages li {
+            color: #173d37;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .messages .error {
+            color: #8f2d3b;
+        }
+
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.58);
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 24px;
+        }
+
+        .section-heading {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 0 0 20px;
+        }
+
+        .section-heading h2 {
+            font-size: 30px;
+            margin: 0;
+        }
+
+        .section-gap {
+            border-top: 1px solid #d8ece7;
+            margin-top: 44px;
+            padding-top: 34px;
+        }
+
+        .search-result-gap {
+            margin-top: 30px;
+        }
+
+        .carousel {
+            margin: 0;
+            position: relative;
+        }
+
+        .carousel-track {
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-arrow {
+            align-items: center;
+            border-radius: 8px;
+            display: flex;
+            height: 42px;
+            justify-content: center;
+            min-width: 42px;
+            padding: 0;
+            position: absolute;
+            top: 110px;
+            z-index: 2;
+        }
+
+        .carousel-prev {
+            left: -64px;
+        }
+
+        .carousel-next {
+            right: -64px;
+        }
+
+        .carousel-arrow[disabled] {
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        .event-grid {
+            display: flex;
+            gap: var(--card-gap);
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 4px;
+        }
+
+        .event-card {
+            color: inherit;
+            display: block;
+            flex: 0 0 var(--card-width);
+            text-decoration: none;
+        }
+
+        .poster {
+            align-items: flex-end;
+            aspect-ratio: 3 / 4;
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            font-weight: 800;
+            overflow: hidden;
+            padding: 14px;
+            position: relative;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.36);
+        }
+
+        .poster::before {
+            background: radial-gradient(circle at 25% 18%, rgba(255, 255, 255, 0.5), transparent 22%);
+            content: "";
+            inset: 0;
+            position: absolute;
+        }
+
+        .poster span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .poster-one { background: linear-gradient(145deg, #154e48, #22a699 45%, #f6c85f); }
+        .poster-two { background: linear-gradient(145deg, #8f2d3b, #e76f51 48%, #243642); }
+        .poster-three { background: linear-gradient(145deg, #264653, #2a9d8f 45%, #e9c46a); }
+        .poster-four { background: linear-gradient(145deg, #2b2d42, #ef476f 48%, #06d6a0); }
+        .poster-five { background: linear-gradient(145deg, #582f0e, #bc6c25 45%, #dda15e); }
+        .poster-six { background: linear-gradient(145deg, #1d3557, #457b9d 45%, #a8dadc); }
+
+        .event-card h3 {
+            font-size: 16px;
+            line-height: 1.32;
+            margin: 10px 0 6px;
+        }
+
+        .event-card p {
+            color: #5e6d68;
+            font-size: 13px;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .category-panel {
+            background: #173d37;
+            border-radius: 8px;
+            color: white;
+            margin-top: 44px;
+            padding: 34px;
+        }
+
+        .category-panel-page {
+            margin-top: 0;
+        }
+
+        .category-panel h2 {
+            margin-top: 0;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-auto-flow: dense;
+            grid-template-columns: repeat(6, 1fr);
+            grid-auto-rows: 82px;
+            gap: 12px;
+        }
+
+        .category {
+            align-items: flex-end;
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            font-size: 17px;
+            font-weight: 700;
+            min-height: 0;
+            padding: 18px;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            transition: transform 0.16s ease, box-shadow 0.16s ease;
+        }
+
+        .category:hover,
+        .category-active {
+            box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.72), 0 14px 26px rgba(0, 0, 0, 0.16);
+            transform: translateY(-2px);
+        }
+
+        .category::after {
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            content: "";
+            height: 72px;
+            position: absolute;
+            right: -22px;
+            top: -24px;
+            width: 72px;
+        }
+
+        .category-large {
+            grid-column: span 2;
+            grid-row: span 2;
+            font-size: 24px;
+        }
+
+        .category-wide {
+            grid-column: span 2;
+        }
+
+        .category-tall {
+            grid-row: span 2;
+        }
+
+        .category-coral { background: #d95f3f; }
+        .category-teal { background: #2f7d72; }
+        .category-mint { background: #3aa58f; }
+        .category-amber { background: #c9832b; }
+        .category-blue { background: #357187; }
+        .category-rose { background: #a9485b; }
+        .category-forest { background: #255f55; }
+
+        .category-hero {
+            background:
+                linear-gradient(128deg, rgba(23, 61, 55, 0.98), rgba(31, 111, 101, 0.92)),
+                radial-gradient(circle at 76% 12%, rgba(246, 200, 95, 0.28), transparent 28%);
+            color: white;
+        }
+
+        .category-hero-inner {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 42px 16px 50px;
+        }
+
+        .category-hero h2 {
+            font-size: 42px;
+            line-height: 1.06;
+            margin: 14px 0 12px;
+        }
+
+        .category-hero p {
+            color: #ddfff5;
+            font-size: 17px;
+            margin: 0;
+            max-width: 560px;
+        }
+
+        .back-link {
+            color: #f6c85f;
+            display: inline-flex;
+            gap: 7px;
+            align-items: center;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .event-detail-hero {
+            background:
+                linear-gradient(128deg, #f7f4fb 0%, #f7f4fb 58%, #ffffff 58%, #ffffff 100%);
+            color: #1b1230;
+        }
+
+        .event-detail-inner {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 28px 16px 58px;
+        }
+
+        .breadcrumbs {
+            align-items: center;
+            color: #665c7a;
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 13px;
+            gap: 10px;
+            margin-bottom: 34px;
+        }
+
+        .breadcrumbs a {
+            color: #4b3f6a;
+            text-decoration: none;
+        }
+
+        .breadcrumbs strong {
+            color: #1b1230;
+        }
+
+        .search-breadcrumbs {
+            margin-bottom: 24px;
+        }
+
+        .event-title-row {
+            align-items: flex-start;
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .event-title-row h2 {
+            font-size: 56px;
+            line-height: 1;
+            margin: 0 0 24px;
+            text-transform: uppercase;
+        }
+
+        .event-meta-row {
+            color: #655b77;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 17px;
+        }
+
+        .event-meta-row span::before {
+            color: #d95f3f;
+            content: "•";
+            font-weight: 900;
+            margin-right: 8px;
+        }
+
+        .event-detail-page {
+            align-items: flex-start;
+            display: grid;
+            gap: 44px;
+            grid-template-columns: 260px minmax(0, 1fr);
+            padding-top: 34px;
+        }
+
+        .event-side {
+            position: sticky;
+            top: 18px;
+        }
+
+        .event-photo {
+            min-height: 340px;
+            width: 100%;
+        }
+
+        .event-page-nav {
+            border-left: 2px solid #d8ece7;
+            display: grid;
+            gap: 12px;
+            margin-top: 24px;
+            padding-left: 18px;
+        }
+
+        .event-page-nav a {
+            color: #4b3f6a;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .event-main {
+            min-width: 0;
+        }
+
+        .event-section {
+            border-bottom: 1px solid #d8ece7;
+            padding: 0 0 34px;
+            margin-bottom: 34px;
+        }
+
+        .event-section h2 {
+            font-size: 30px;
+            margin: 0 0 20px;
+            text-transform: none;
+        }
+
+        .event-section p {
+            color: #5d706b;
+            font-size: 16px;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .ticket-offer {
+            align-items: center;
+            background: white;
+            border: 1px solid #d8ece7;
+            border-radius: 8px;
+            box-shadow: 0 14px 30px rgba(25, 64, 70, 0.09);
+            display: grid;
+            gap: 24px;
+            grid-template-columns: minmax(0, 1fr) auto;
+            padding: 24px;
+        }
+
+        .ticket-offer h3 {
+            font-size: 22px;
+            margin: 4px 0 8px;
+        }
+
+        .ticket-date {
+            color: #1b1230 !important;
+            font-size: 20px !important;
+            font-weight: 800;
+        }
+
+        .ticket-button {
+            background: #f6b80f;
+            color: #1b1230;
+            min-width: 150px;
+        }
+
+        .account-page,
+        .profile-page {
+            padding-top: 34px;
+        }
+
+        .account-card,
+        .profile-card,
+        .profile-ticket {
+            background: white;
+            border: 1px solid #d8ece7;
+            border-radius: 8px;
+            box-shadow: 0 14px 30px rgba(25, 64, 70, 0.09);
+        }
+
+        .account-card {
+            max-width: 520px;
+            padding: 26px;
+        }
+
+        .account-card h2,
+        .profile-card h2 {
+            margin: 0 0 18px;
+        }
+
+        .account-note {
+            color: #5d706b;
+            margin: 16px 0 0;
+        }
+
+        .form-row {
+            margin-bottom: 14px;
+        }
+
+        .form-errors {
+            color: #8f2d3b;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        .form-errors ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .form-help {
+            color: #5d706b;
+            font-size: 13px;
+            line-height: 1.45;
+            margin: 6px 0 0;
+        }
+
+        .profile-layout {
+            align-items: flex-start;
+            display: grid;
+            gap: 34px;
+            grid-template-columns: 280px minmax(0, 1fr);
+        }
+
+        .profile-card {
+            padding: 24px;
+        }
+
+        .profile-data {
+            margin: 0;
+        }
+
+        .profile-data dt {
+            color: #5d706b;
+            font-size: 13px;
+            font-weight: 800;
+            margin-top: 14px;
+        }
+
+        .profile-data dd {
+            font-weight: 800;
+            margin: 4px 0 0;
+        }
+
+        .profile-actions {
+            margin-top: 20px;
+        }
+
+        .profile-logout-form {
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            margin: 0;
+            padding: 0 !important;
+        }
+
+        .ticket-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .profile-ticket {
+            align-items: center;
+            display: grid;
+            gap: 16px;
+            grid-template-columns: minmax(0, 1fr) auto;
+            padding: 18px;
+        }
+
+        .profile-ticket h3 {
+            margin: 0 0 6px;
+        }
+
+        .profile-ticket p {
+            margin: 0;
+        }
+
+        .pagination {
+            align-items: center;
+            color: #5d706b;
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 14px;
+            font-weight: 800;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 760px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 74px;
+            }
+
+            .category-large,
+            .category-wide {
+                grid-column: span 2;
+            }
+
+            .category-tall {
+                grid-row: span 1;
+            }
+
+            .event-detail-page {
+                grid-template-columns: 1fr;
+            }
+
+            .event-side {
+                position: static;
+            }
+
+            .event-title-row h2 {
+                font-size: 40px;
+            }
+
+            .ticket-offer {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-layout,
+            .profile-ticket {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .detail-card {
+            max-width: 460px;
+        }
+
+        .detail-card .poster {
+            max-width: 260px;
+        }
+
+        .detail-card .actions {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .reservation-form {
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            margin: 0;
+            padding: 0 !important;
+        }
+
+        .detail-back {
+            color: #a33f2d;
+        }
+
+        .task-list {
+            display: grid;
+            gap: 10px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .task-item,
+        form:not(.search-bar) {
+            background: white;
+            border: 1px solid #d8ece7;
+            border-radius: 8px;
+            box-shadow: 0 12px 26px rgba(25, 64, 70, 0.09);
+            padding: 16px;
+        }
+
+        .meta {
+            color: #5d706b;
+            font-size: 14px;
+        }
+
+        .overdue {
+            color: #a83232;
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 6px;
+            padding: 9px;
+        }
+
+        .search-bar input {
+            width: auto;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                --card-width: 160px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 14px 16px;
+            }
+
+            .topnav {
+                justify-content: flex-start;
+            }
+
+            .hero h2 {
+                font-size: 32px;
+            }
+
+            .search-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .search-field {
+                border-bottom: 1px solid #e4e0eb;
+                border-right: 0;
+            }
+
+            .calendar-popover {
+                flex-direction: column;
+                width: min(92vw, 260px);
+            }
+
+            .calendar {
+                width: 100%;
+            }
+
+            .carousel-prev {
+                left: 4px;
+            }
+
+            .carousel-next {
+                right: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="topbar">
+        <h1 class="brand">Bilety</h1>
+        <nav class="topnav" aria-label="Konto uzytkownika">
+            {% if request.user.is_authenticated %}
+                <a class="account-icon-link" href="{% url 'tasks:profile' %}" aria-label="Profil uzytkownika" title="Profil">
+                    <span class="account-icon" aria-hidden="true"></span>
+                </a>
+            {% else %}
+                <a class="account-icon-link" href="{% url 'tasks:login' %}" aria-label="Zaloguj" title="Zaloguj">
+                    <span class="account-icon" aria-hidden="true"></span>
+                </a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+<main>
+    {% if messages %}
+        <section class="message-modal" data-message-modal>
+            <div class="message-dialog" role="dialog" aria-modal="true" aria-labelledby="message-title">
+                <h2 id="message-title">Potwierdzenie</h2>
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                <button class="button" type="button" data-close-message>OK</button>
+            </div>
+        </section>
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+<script>
+    function formatIsoDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    }
+
+    function formatDisplayDate(value) {
+        if (!value) {
+            return "";
+        }
+        const parts = value.split("-");
+        return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    }
+
+    function addMonths(date, amount) {
+        return new Date(date.getFullYear(), date.getMonth() + amount, 1);
+    }
+
+    function setupDateRange(root) {
+        const trigger = root.querySelector(".date-trigger");
+        const label = root.querySelector(".date-label");
+        const fromInput = root.querySelector("input[name='date_from']");
+        const toInput = root.querySelector("input[name='date_to']");
+        const popover = root.querySelector(".calendar-popover");
+        const calendars = root.querySelectorAll(".calendar");
+        let visibleMonth = new Date();
+
+        function updateLabel() {
+            if (fromInput.value && toInput.value) {
+                label.textContent = `${formatDisplayDate(fromInput.value)} - ${formatDisplayDate(toInput.value)}`;
+            } else if (fromInput.value || toInput.value) {
+                label.textContent = formatDisplayDate(fromInput.value || toInput.value);
+            } else {
+                label.textContent = "Data";
+            }
+        }
+
+        function selectDate(value) {
+            let rangeComplete = false;
+            if (!fromInput.value || (fromInput.value && toInput.value)) {
+                fromInput.value = value;
+                toInput.value = "";
+            } else if (value < fromInput.value) {
+                toInput.value = fromInput.value;
+                fromInput.value = value;
+                rangeComplete = true;
+            } else {
+                toInput.value = value;
+                rangeComplete = true;
+            }
+            updateLabel();
+            render();
+            if (rangeComplete) {
+                root.classList.remove("open");
+            } else {
+                root.classList.add("open");
+            }
+        }
+
+        function renderCalendar(calendar, monthDate) {
+            const title = calendar.querySelector(".calendar-title");
+            const grid = calendar.querySelector(".calendar-grid");
+            title.textContent = monthDate.toLocaleDateString("pl-PL", { month: "long", year: "numeric" });
+            grid.innerHTML = "";
+
+            ["Pn", "Wt", "Sr", "Cz", "Pt", "Sb", "Nd"].forEach((day) => {
+                const cell = document.createElement("div");
+                cell.className = "calendar-weekday";
+                cell.textContent = day;
+                grid.appendChild(cell);
+            });
+
+            const firstDay = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
+            const offset = (firstDay.getDay() + 6) % 7;
+            const daysInMonth = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).getDate();
+
+            for (let index = 0; index < offset; index += 1) {
+                const empty = document.createElement("button");
+                empty.className = "calendar-day empty";
+                empty.type = "button";
+                empty.tabIndex = -1;
+                grid.appendChild(empty);
+            }
+
+            for (let day = 1; day <= daysInMonth; day += 1) {
+                const date = new Date(monthDate.getFullYear(), monthDate.getMonth(), day);
+                const value = formatIsoDate(date);
+                const cell = document.createElement("button");
+                cell.className = "calendar-day";
+                cell.type = "button";
+                cell.textContent = day;
+                if (value === fromInput.value || value === toInput.value) {
+                    cell.classList.add("selected");
+                }
+                if (fromInput.value && toInput.value && value > fromInput.value && value < toInput.value) {
+                    cell.classList.add("in-range");
+                }
+                cell.addEventListener("click", () => selectDate(value));
+                grid.appendChild(cell);
+            }
+        }
+
+        function render() {
+            renderCalendar(calendars[0], visibleMonth);
+            renderCalendar(calendars[1], addMonths(visibleMonth, 1));
+        }
+
+        root.querySelectorAll("[data-prev-month]").forEach((button) => {
+            button.addEventListener("click", () => {
+                visibleMonth = addMonths(visibleMonth, -1);
+                render();
+            });
+        });
+
+        root.querySelectorAll("[data-next-month]").forEach((button) => {
+            button.addEventListener("click", () => {
+                visibleMonth = addMonths(visibleMonth, 1);
+                render();
+            });
+        });
+
+        trigger.addEventListener("click", (event) => {
+            event.stopPropagation();
+            root.classList.toggle("open");
+        });
+
+        popover.addEventListener("click", (event) => {
+            event.stopPropagation();
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!root.contains(event.target)) {
+                root.classList.remove("open");
+            }
+        });
+
+        updateLabel();
+        render();
+    }
+
+    document.querySelectorAll(".date-range").forEach(setupDateRange);
+
+    const messageModal = document.querySelector("[data-message-modal]");
+    if (messageModal) {
+        const closeButton = messageModal.querySelector("[data-close-message]");
+        function closeMessageModal() {
+            messageModal.remove();
+        }
+        closeButton.addEventListener("click", closeMessageModal);
+        messageModal.addEventListener("click", (event) => {
+            if (event.target === messageModal) {
+                closeMessageModal();
+            }
+        });
+    }
+
+    function setupCarousel(carousel) {
+        const track = carousel.querySelector(".carousel-track");
+        const previous = carousel.querySelector(".carousel-prev");
+        const next = carousel.querySelector(".carousel-next");
+
+        function getStep() {
+            const card = track.querySelector(".event-card");
+            if (!card) {
+                return 0;
+            }
+            const styles = window.getComputedStyle(track);
+            const gapValue = styles.columnGap === "normal" ? styles.gap : styles.columnGap;
+            const gap = Number.parseFloat(gapValue || "0") || 0;
+            return card.getBoundingClientRect().width + gap;
+        }
+
+        function updateButtons() {
+            previous.disabled = track.scrollLeft <= 1;
+            next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+        }
+
+        previous.addEventListener("click", () => {
+            track.scrollBy({ left: -getStep(), behavior: "smooth" });
+        });
+
+        next.addEventListener("click", () => {
+            track.scrollBy({ left: getStep(), behavior: "smooth" });
+        });
+
+        track.addEventListener("scroll", updateButtons);
+        window.addEventListener("resize", updateButtons);
+        updateButtons();
+    }
+
+    document.querySelectorAll("[data-carousel]").forEach(setupCarousel);
+</script>
+</body>
+</html>

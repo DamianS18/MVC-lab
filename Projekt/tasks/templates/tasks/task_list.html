@@ -1,0 +1,66 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Lista wydarzen{% endblock %}
+
+{% block content %}
+<section class="page-shell">
+<div class="section-heading">
+    <h2>Wydarzenia</h2>
+    <a class="button" href="{% url 'tasks:add' %}">Dodaj wydarzenie</a>
+</div>
+
+<form class="search-bar" action="{% url 'tasks:list' %}" method="get">
+    <input class="search-field" type="search" name="q" placeholder="Szukaj wydarzenia" value="{{ search.q }}">
+    <div class="date-range search-field">
+        <button class="date-trigger" type="button">
+            <span class="date-label">Data</span>
+        </button>
+        <input type="hidden" name="date_from" value="{{ search.date_from }}">
+        <input type="hidden" name="date_to" value="{{ search.date_to }}">
+        <div class="calendar-popover">
+            <div class="calendar">
+                <div class="calendar-header">
+                    <button type="button" data-prev-month>&lt;</button>
+                    <span class="calendar-title"></span>
+                    <span></span>
+                </div>
+                <div class="calendar-grid"></div>
+            </div>
+            <div class="calendar">
+                <div class="calendar-header">
+                    <span></span>
+                    <span class="calendar-title"></span>
+                    <button type="button" data-next-month>&gt;</button>
+                </div>
+                <div class="calendar-grid"></div>
+            </div>
+        </div>
+    </div>
+    <input class="search-field" type="search" name="location" placeholder="Lokalizacja" value="{{ search.location }}">
+    <button class="button" type="submit">Szukaj</button>
+</form>
+
+{% if event_list %}
+    <div class="event-grid">
+    {% for event in event_list %}
+        <a class="event-card" href="{% url 'tasks:detail' event.id %}">
+            <div class="poster {% cycle 'poster-one' 'poster-two' 'poster-three' 'poster-four' 'poster-five' 'poster-six' %}">
+                <span>{{ event.event_name }}</span>
+            </div>
+            <h3>{{ event.event_name }}</h3>
+            <p>{{ event.event_date }}<br>{% if event.location %}{{ event.location }}<br>{% endif %}{{ event.seats }} miejsc</p>
+            {% if not event.has_available_seats %}
+                <p class="overdue">Brak wolnych miejsc</p>
+            {% endif %}
+        </a>
+    {% endfor %}
+    </div>
+{% else %}
+    <section class="menu-card">
+        <h3>Brak wydarzen.</h3>
+        <p>Dodaj pierwsze wydarzenie do systemu rezerwacji.</p>
+        <a class="button" href="{% url 'tasks:add' %}">Dodaj wydarzenie</a>
+    </section>
+{% endif %}
+</section>
+{% endblock %}
