@@ -16,7 +16,6 @@
 12. [Bezpieczenstwo](#bezpieczenstwo)
 13. [Testowanie](#testowanie)
 14. [Uruchomienie projektu](#uruchomienie-projektu)
-15. [Scenariusz prezentacji](#scenariusz-prezentacji)
 
 ## Opis projektu
 
@@ -170,7 +169,7 @@ Projekt byl wykonywany indywidualnie, dlatego jedna osoba odpowiadala za wszystk
 | Problem z logowaniem | Brak dostepu do profilu | Wykorzystanie gotowego systemu Django Auth |
 | Brak danych po pobraniu z GitHuba | Pusta aplikacja | Dodanie pliku `sample_events.json` |
 | Bledy w wyszukiwaniu | Zle wyniki dla uzytkownika | Testy filtrowania |
-| Problem podczas prezentacji | Trudnosc pokazania projektu | Przygotowany scenariusz prezentacji |
+| Problem podczas prezentacji | Trudnosc pokazania projektu | Przygotowanie instrukcji uruchomienia i sprawdzenie aplikacji przed pokazem |
 
 ## Kosztorys
 
@@ -459,17 +458,3 @@ Harmonogram testow:
    ```text
    http://127.0.0.1:8000/admin/
    ```
-
-## Scenariusz prezentacji
-
-1. Pokazanie strony glownej.
-2. Wyszukanie wydarzenia po nazwie, dacie lub lokalizacji.
-3. Wejscie w kategorie wydarzen.
-4. Otwarcie szczegolow wybranego wydarzenia.
-5. Rejestracja lub logowanie uzytkownika.
-6. Kupienie biletu.
-7. Pokazanie komunikatu potwierdzajacego zakup.
-8. Wejscie w profil i pokazanie kupionego biletu.
-9. Pokazanie panelu administratora.
-10. Uruchomienie testow automatycznych.
-
