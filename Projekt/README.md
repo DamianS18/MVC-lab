@@ -74,6 +74,9 @@ Django nazywa ten wzorzec MVT, ale w projekcie odpowiada on wymaganiom MVC: mode
 
 ## Dokumentacja techniczna
 
+Ten plik `README.md` jest krotkim opisem repozytorium oraz instrukcja uruchomienia.
+Wlasciwa dokumentacja projektu znajduje sie w osobnym pliku:
+
 Pelna dokumentacja projektowa znajduje sie w pliku:
 
 ```text

@@ -1,5 +1,32 @@
 # Dokumentacja techniczna projektu
 
+## Spis tresci
+
+1. [Temat projektu](#1-temat-projektu)
+2. [Sklad grupy projektowej](#2-sklad-grupy-projektowej)
+3. [Cel projektu](#3-cel-projektu)
+4. [Glowne funkcjonalnosci systemu](#4-glowne-funkcjonalnosci-systemu)
+5. [Moduly systemu](#5-moduly-systemu)
+6. [Zastosowane rozwiazania techniczne](#6-zastosowane-rozwiazania-techniczne)
+7. [Wzorzec architektoniczny MVC](#7-wzorzec-architektoniczny-mvc)
+8. [Czasochlonnosc projektu](#8-czasochlonnosc-projektu)
+9. [Zasoby potrzebne do wykonania projektu](#9-zasoby-potrzebne-do-wykonania-projektu)
+10. [Harmonogram realizacji projektu](#10-harmonogram-realizacji-projektu)
+11. [Ryzyka projektowe](#11-ryzyka-projektowe)
+12. [Kosztorys projektu](#12-kosztorys-projektu)
+13. [Aktorzy systemu](#13-aktorzy-systemu)
+14. [Przypadki uzycia](#14-przypadki-uzycia)
+15. [Zwiazki include i extend](#15-zwiazki-include-i-extend)
+16. [Diagram przypadkow uzycia](#16-diagram-przypadkow-uzycia)
+17. [Diagram klas](#17-diagram-klas)
+18. [Strategia bezpieczenstwa](#18-strategia-bezpieczenstwa)
+19. [Zasady bezpieczenstwa z cwiczen 13](#19-zasady-bezpieczenstwa-z-cwiczen-13)
+20. [Harmonogram testow](#20-harmonogram-testow)
+21. [Sposob testowania projektu](#21-sposob-testowania-projektu)
+22. [Instrukcja uruchomienia](#22-instrukcja-uruchomienia)
+23. [Scenariusz prezentacji projektu](#23-scenariusz-prezentacji-projektu)
+24. [Podsumowanie](#24-podsumowanie)
+
 ## 1. Temat projektu
 
 **System rezerwacji biletow na wydarzenia**
@@ -495,4 +522,3 @@ Projekt spelnia podstawowe wymagania tematu oraz zawiera kilka elementow rozszer
 - system logowania i sesji uzytkownika,
 - panel administratora,
 - przykladowe dane do wczytania po pobraniu projektu.
-
