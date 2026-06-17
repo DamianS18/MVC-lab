@@ -7,9 +7,10 @@
 3. Funkcjonalnosci
 4. Struktura MVC
 5. Struktura plikow
-6. Uruchomienie
-7. Przykladowe dane
-8. Testy
+6. Dokumentacja techniczna
+7. Uruchomienie
+8. Przykladowe dane
+9. Testy
 
 ## Opis projektu
 
@@ -70,6 +71,16 @@ Django nazywa ten wzorzec MVT, ale w projekcie odpowiada on wymaganiom MVC: mode
 - `tasks/fixtures/sample_events.json` - przykladowe dane wydarzen.
 - `requirements.txt` - lista wymaganych paczek.
 - `.gitignore` - pliki pomijane przy dodawaniu projektu do repozytorium.
+
+## Dokumentacja techniczna
+
+Pelna dokumentacja projektowa znajduje sie w pliku:
+
+```text
+DOKUMENTACJA_TECHNICZNA.md
+```
+
+Zawiera opis projektu, funkcjonalnosci, moduly, harmonogram, kosztorys, ryzyka, przypadki uzycia, diagramy, strategie bezpieczenstwa oraz harmonogram testow.
 
 ## Uruchomienie
 
