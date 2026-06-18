@@ -4,18 +4,20 @@
 
 1. [Opis projektu](#opis-projektu)
 2. [Funkcjonalnosci](#funkcjonalnosci)
-3. [Technologie](#technologie)
-4. [Struktura MVC](#struktura-mvc)
-5. [Struktura plikow](#struktura-plikow)
-6. [Czasochlonnosc i harmonogram](#czasochlonnosc-i-harmonogram)
-7. [Zasoby potrzebne do wykonania projektu](#zasoby-potrzebne-do-wykonania-projektu)
-8. [Ryzyka projektowe](#ryzyka-projektowe)
-9. [Kosztorys](#kosztorys)
-10. [Aktorzy i przypadki uzycia](#aktorzy-i-przypadki-uzycia)
-11. [Diagramy](#diagramy)
-12. [Bezpieczenstwo](#bezpieczenstwo)
-13. [Testowanie](#testowanie)
-14. [Uruchomienie projektu](#uruchomienie-projektu)
+3. [Moduly systemu](#moduly-systemu)
+4. [Technologie](#technologie)
+5. [Struktura MVC](#struktura-mvc)
+6. [Struktura plikow](#struktura-plikow)
+7. [Czasochlonnosc i harmonogram](#czasochlonnosc-i-harmonogram)
+8. [Zasoby potrzebne do wykonania projektu](#zasoby-potrzebne-do-wykonania-projektu)
+9. [Ryzyka projektowe](#ryzyka-projektowe)
+10. [Kosztorys](#kosztorys)
+11. [Aktorzy i przypadki uzycia](#aktorzy-i-przypadki-uzycia)
+12. [Diagramy](#diagramy)
+13. [Bezpieczenstwo](#bezpieczenstwo)
+14. [Testowanie](#testowanie)
+15. [Zrzuty ekranowe](#zrzuty-ekranowe)
+16. [Uruchomienie projektu](#uruchomienie-projektu)
 
 ## Opis projektu
 
@@ -59,6 +61,20 @@ Projekt zawiera wiecej niz 5 wymaganych funkcjonalnosci:
 
 9. **Testy automatyczne**  
    Projekt zawiera testy sprawdzajace najwazniejsze elementy aplikacji.
+
+## Moduly systemu
+
+Projekt sklada sie z kilku wspolpracujacych ze soba modulow:
+
+| Modul | Za co odpowiada | Zastosowane rozwiazanie |
+| --- | --- | --- |
+| Wydarzenia | Przechowywanie i wyswietlanie informacji o wydarzeniach | Model `TicketEvent`, widoki szczegolow oraz kategorie |
+| Wyszukiwanie | Szukanie wydarzen po nazwie, lokalizacji i dacie | Filtrowanie danych pobranych z bazy przez Django ORM |
+| Uzytkownicy | Rejestracja, logowanie, wylogowanie i profil | Wbudowany system kont i sesji Django |
+| Bilety | Zakup biletu i zapisanie go na koncie uzytkownika | Model `TicketPurchase` polaczony z uzytkownikiem i wydarzeniem |
+| Administracja | Zarzadzanie wydarzeniami, kontami i kupionymi biletami | Wbudowany panel administratora Django |
+
+Podzial na moduly ulatwia rozwijanie projektu i oddziela dane, logike aplikacji oraz wyglad stron.
 
 ## Technologie
 
@@ -162,14 +178,15 @@ Projekt byl wykonywany indywidualnie, dlatego jedna osoba odpowiadala za wszystk
 
 ## Ryzyka projektowe
 
-| Ryzyko | Skutek | Sposob ograniczenia |
-| --- | --- | --- |
-| Problem z konfiguracja Django | Opoznienie pracy | Korzystanie z dokumentacji i testowanie krok po kroku |
-| Bledy w bazie danych | Niepoprawne dzialanie aplikacji | Migracje i testy |
-| Problem z logowaniem | Brak dostepu do profilu | Wykorzystanie gotowego systemu Django Auth |
-| Brak danych po pobraniu z GitHuba | Pusta aplikacja | Dodanie pliku `sample_events.json` |
-| Bledy w wyszukiwaniu | Zle wyniki dla uzytkownika | Testy filtrowania |
-| Problem podczas prezentacji | Trudnosc pokazania projektu | Przygotowanie instrukcji uruchomienia i sprawdzenie aplikacji przed pokazem |
+| Etap | Ryzyko | Prawdopodobienstwo | Skutek | Poziom | Sposob ograniczenia |
+| --- | --- | --- | --- | --- | --- |
+| Projektowanie | Pominiecie waznej funkcjonalnosci | Srednie | Niepelny projekt | Sredni | Lista wymagan i regularne sprawdzanie postepu |
+| Implementacja | Problem z konfiguracja Django | Srednie | Opoznienie pracy | Sredni | Dokumentacja Django i testowanie krok po kroku |
+| Implementacja | Bledy w modelach lub bazie danych | Srednie | Niepoprawne dane | Wysoki | Migracje, kopia bazy i testy modeli |
+| Implementacja | Problem z logowaniem | Niskie | Brak dostepu do profilu | Sredni | Wbudowany system Django Auth i testy logowania |
+| Testowanie | Bledy w wyszukiwaniu lub zakupie | Srednie | Niepoprawne wyniki lub liczba miejsc | Wysoki | Testy automatyczne i reczne sprawdzenie scenariuszy |
+| Uruchomienie | Brak danych po pobraniu z GitHuba | Srednie | Pusta aplikacja | Niski | Fixture `sample_events.json` i instrukcja w README |
+| Prezentacja | Problem z uruchomieniem aplikacji | Niskie | Brak mozliwosci pokazania projektu | Wysoki | Wczesniejsze uruchomienie serwera i kopia projektu |
 
 ## Kosztorys
 
@@ -227,6 +244,10 @@ Projekt ma charakter edukacyjny, wiec nie wymaga rzeczywistych kosztow wdrozenia
 | PU8 | Przeglad profilu | Uzytkownik zalogowany |
 | PU9 | Zarzadzanie wydarzeniami | Administrator |
 | PU10 | Przeglad zakupow | Administrator |
+| PU11 | Wylogowanie | Uzytkownik zalogowany |
+| PU12 | Przeglad aktywnych biletow | Uzytkownik zalogowany |
+| PU13 | Przeglad historii wydarzen | Uzytkownik zalogowany |
+| PU14 | Zarzadzanie kontami i uprawnieniami | Administrator |
 
 Zwiazki:
 
@@ -234,6 +255,7 @@ Zwiazki:
 - `Zakup biletu` zawiera sprawdzenie dostepnych miejsc.
 - `Wyszukiwanie wydarzen` rozszerza przegladanie wydarzen.
 - `Przeglad profilu` zawiera wyswietlenie biletow i historii wydarzen.
+- `Zarzadzanie wydarzeniami` zawiera dodawanie, edycje i usuwanie wydarzenia.
 
 ## Diagramy
 
@@ -245,16 +267,23 @@ flowchart LR
     user["Uzytkownik zalogowany"]
     admin["Administrator"]
 
-    browse["Przegladanie wydarzen"]
-    search["Wyszukiwanie wydarzen"]
-    categories["Przegladanie kategorii"]
-    details["Podglad szczegolow wydarzenia"]
-    signup["Rejestracja konta"]
-    login["Logowanie"]
-    buy["Zakup biletu"]
-    profile["Przeglad profilu"]
-    manage["Zarzadzanie wydarzeniami"]
-    purchases["Przeglad zakupow"]
+    subgraph system["System rezerwacji biletow"]
+        browse(["Przegladanie wydarzen"])
+        search(["Wyszukiwanie wydarzen"])
+        categories(["Przegladanie kategorii"])
+        details(["Podglad szczegolow wydarzenia"])
+        signup(["Rejestracja konta"])
+        login(["Logowanie"])
+        logout(["Wylogowanie"])
+        buy(["Zakup biletu"])
+        availability(["Sprawdzenie miejsc"])
+        profile(["Przeglad profilu"])
+        tickets(["Aktywne bilety"])
+        history(["Historia wydarzen"])
+        manage(["Zarzadzanie wydarzeniami"])
+        purchases(["Przeglad zakupow"])
+        accounts(["Zarzadzanie kontami"])
+    end
 
     guest --> browse
     guest --> search
@@ -269,12 +298,17 @@ flowchart LR
     user --> details
     user --> buy
     user --> profile
+    user --> logout
 
     admin --> manage
     admin --> purchases
+    admin --> accounts
 
     search -. "extend" .-> browse
     buy -. "include" .-> login
+    buy -. "include" .-> availability
+    profile -. "include" .-> tickets
+    profile -. "include" .-> history
 ```
 
 ### Diagram klas
@@ -340,6 +374,20 @@ classDiagram
 - Panel administratora jest dostepny tylko dla administratora.
 - Przed zakupem system sprawdza, czy sa jeszcze wolne miejsca.
 
+### Naklad na bezpieczenstwo
+
+Projekt korzysta przede wszystkim z zabezpieczen dostarczanych przez Django. Dzieki temu nie wymaga zakupu dodatkowego oprogramowania, ale nadal potrzebuje czasu na konfiguracje i testy.
+
+| Zabezpieczenie | Szacowany czas | Koszt dodatkowy | Korzysc |
+| --- | ---: | ---: | --- |
+| Logowanie i sesje Django | 2 godziny | 0 zl | Ochrona profilu i zakupow uzytkownika |
+| Walidacja emaila i hasla | 1 godzina | 0 zl | Ograniczenie blednych danych i slabych hasel |
+| Kontrola dostepu do zakupu i profilu | 1 godzina | 0 zl | Brak dostepu dla osob niezalogowanych |
+| Tokeny CSRF i bezpieczne formularze POST | Wbudowane w Django | 0 zl | Ochrona przed nieautoryzowanym wysylaniem formularzy |
+| Testy zabezpieczen i uprawnien | 1 godzina | 0 zl | Wczesne wykrycie bledow dostepu |
+
+Zastosowane zabezpieczenia daja duza korzysc przy niewielkim nakladzie, poniewaz najwazniejsze mechanizmy sa czescia frameworka Django.
+
 ### Zasady z cwiczen
 
 **Zasada naturalnego styku z uzytkownikiem**  
@@ -382,18 +430,44 @@ Testy sprawdzaja m.in.:
 - wyszukiwanie po nazwie, lokalizacji i dacie,
 - kategorie i podkategorie.
 
-Harmonogram testow:
+### Plan i harmonogram testow
 
-| Modul | Sposob testowania | Czas |
-| --- | --- | ---: |
-| Modele | Testy automatyczne | 20 min |
-| Strona glowna | Testy automatyczne i reczne | 30 min |
-| Wyszukiwanie | Testy dla nazwy, lokalizacji i dat | 40 min |
-| Rejestracja | Test poprawnych i blednych danych | 30 min |
-| Logowanie | Reczne sprawdzenie sesji | 20 min |
-| Zakup biletu | Test zmniejszania liczby miejsc | 40 min |
-| Profil | Test biletow i historii | 30 min |
-| Panel admina | Reczne sprawdzenie zarzadzania | 30 min |
+Podany czas obejmuje uruchomienie testow automatycznych, reczne sprawdzenie danego modulu oraz zapisanie ewentualnych bledow.
+
+| Modul | Sposob testowania | Czas | Osoba testujaca |
+| --- | --- | ---: | --- |
+| Modele | Testy automatyczne metod i relacji | 20 min | Damian |
+| Strona glowna | Testy automatyczne i reczne sprawdzenie widoku | 30 min | Damian |
+| Wyszukiwanie | Nazwa, lokalizacja, jedna data i zakres dat | 40 min | Damian |
+| Rejestracja | Poprawne dane, powtorzony email i bledne haslo | 30 min | Damian |
+| Logowanie | Poprawne i bledne dane oraz sprawdzenie sesji | 20 min | Damian |
+| Zakup biletu | Logowanie, liczba miejsc, zapis zakupu i brak miejsc | 40 min | Damian |
+| Profil | Aktywne bilety, historia, kolejnosc i paginacja | 30 min | Damian |
+| Panel admina | Dodawanie, edycja, usuwanie i filtrowanie danych | 30 min | Damian |
+
+## Zrzuty ekranowe
+
+Ponizej znajduja sie najwazniejsze widoki dzialajacej aplikacji.
+
+### Strona glowna
+
+![Strona glowna aplikacji](docs/screenshots/strona-glowna.png)
+
+### Wyniki wyszukiwania
+
+![Wyniki wyszukiwania wydarzen](docs/screenshots/wyszukiwanie.png)
+
+### Szczegoly wydarzenia
+
+![Szczegoly wydarzenia i zakup biletu](docs/screenshots/szczegoly-wydarzenia.png)
+
+### Profil uzytkownika
+
+![Profil uzytkownika i kupione bilety](docs/screenshots/profil.png)
+
+### Panel administratora
+
+![Panel administratora Django](docs/screenshots/panel-administratora.png)
 
 ## Uruchomienie projektu
 
